@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Screen — ATS-Friendly In-Browser Resume Analysis</title>
+<meta name="description" content="Analyze your resume with ATS-oriented checks to identify structure, keywords, readability, and content gaps. 100% private and processed locally in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="navbar">
+    <div class="navbar__container">
+      <div class="navbar__brand">
+        <div class="navbar__logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="navbar__title-group">
+          <span class="navbar__title">Resume Screen</span>
+          <span class="navbar__badge">ATS Engine</span>
+          <span class="brand-signature">scriptedbydev</span>
+        </div>
+      </div>
+
+      <div class="navbar__meta">
+        <div class="privacy-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Private • In-Browser</span>
+        </div>
+        <div class="case-tag" id="caseNumber">AUDIT #------</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main class="main-content">
+
+    <!-- ===================== HERO SECTION ===================== -->
+    <section class="hero" id="heroSection">
+      <div class="hero__badge">
+        <span class="pulse-dot"></span>
+        <span>Local Screening & Verification</span>
+      </div>
+      <h1 class="hero__title">ATS-Friendly Resume Analysis</h1>
+      <p class="hero__subtitle">
+        Analyze your resume with ATS-oriented checks to identify structure, keywords, readability, and content gaps.
+      </p>
+
+      <div class="feature-pills">
+        <div class="feature-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>ATS Formatting Checks</span>
+        </div>
+        <div class="feature-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Metric Quantification</span>
+        </div>
+        <div class="feature-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>40+ Recruiter Rules (RAG)</span>
+        </div>
+        <div class="feature-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Zero Server Storage</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== UPLOAD CARD ===================== -->
+    <section class="upload-wrapper" id="intakeFolder">
+      <div class="card upload-card">
+        
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" accept="application/pdf" hidden>
+          
+          <div class="dropzone__icon-circle">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+
+          <div class="dropzone__text">
+            <h2 class="dropzone__title">Drag and drop your resume PDF here</h2>
+            <p class="dropzone__sub">or browse from your files to start evaluation</p>
+          </div>
+
+          <button class="btn btn--primary" id="browseBtn" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+              <polyline points="13 2 13 9 20 9"></polyline>
+            </svg>
+            <span>Select PDF Resume</span>
+          </button>
+
+          <!-- Sample Resumes Selection Bar -->
+          <div class="samples-bar">
+            <span class="samples-label">Quick Test Sample Cases:</span>
+            <div class="samples-buttons">
+              <button type="button" class="sample-btn sample-btn--good" id="loadSampleGood" title="Load high-scoring candidate resume">
+                <span class="sample-indicator sample-indicator--good"></span>
+                <span>Sarah Nguyen (Accepted Sample)</span>
+              </button>
+              <button type="button" class="sample-btn sample-btn--bad" id="loadSampleBad" title="Load weak candidate resume with common pitfalls">
+                <span class="sample-indicator sample-indicator--bad"></span>
+                <span>John Carter (Rejected Sample)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected File Pill -->
+        <div class="filepill" id="filePill" hidden>
+          <div class="filepill__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+          </div>
+          <div class="filepill__details">
+            <span class="filepill__name" id="fileName">resume.pdf</span>
+            <span class="filepill__status">Ready for ATS screening</span>
+          </div>
+          <button class="filepill__remove" id="removeFile" type="button" aria-label="Remove file">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <!-- Actions -->
+        <div class="upload-actions">
+          <button class="btn btn--analyze" id="analyzeBtn" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+            <span>Analyze Resume</span>
+          </button>
+          
+          <div class="privacy-notice">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <p><strong>Your resume stays private.</strong> Resume Screen processes your resume in your browser and does not store your resume data.</p>
+          </div>
+        </div>
+
+        <span class="watermark-tag">scriptedbydev</span>
+      </div>
+    </section>
+
+    <!-- ===================== LOADING STATE ===================== -->
+    <section class="loading-state" id="processing" hidden>
+      <div class="loading-card card">
+        <div class="loading-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-core">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 14 14"></polyline>
+            </svg>
+          </div>
+        </div>
+        <h3 class="loading-title">Analyzing Resume with ATS Engine</h3>
+        <p class="loading-line" id="processingLine">Extracting document text & layout in browser…</p>
+        
+        <div class="loading-steps">
+          <div class="step-item step-item--active">
+            <span class="step-dot"></span>
+            <span>Document Parsing & Layout Extraction</span>
+          </div>
+          <div class="step-item step-item--active">
+            <span class="step-dot"></span>
+            <span>TF-IDF RAG Retrieval (40+ Screening Rules)</span>
+          </div>
+          <div class="step-item step-item--active">
+            <span class="step-dot"></span>
+            <span>Quantification & Action-Verb Diagnostics</span>
+          </div>
+          <div class="step-item step-item--active">
+            <span class="step-dot"></span>
+            <span>Scoring & Verdict Synthesis</span>
+          </div>
+        </div>
+        <div class="loading-watermark">powered by scriptedbydev</div>
+      </div>
+    </section>
+
+    <!-- ===================== ERROR STATE ===================== -->
+    <section class="error-wrapper" id="errorCard" hidden>
+      <div class="card error-card">
+        <div class="error-header">
+          <div class="error-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 class="error-title">Unable to Complete Screening</h3>
+            <p class="error-message" id="errorMessage">Something went wrong while parsing the file.</p>
+          </div>
+        </div>
+        <button class="btn btn--outline" id="errorRetry" type="button">Select Another Resume</button>
+      </div>
+    </section>
+
+    <!-- ===================== RESULTS VIEW ===================== -->
+    <section class="results-view" id="results" hidden>
+
+      <!-- Results Header & Verdict -->
+      <div class="card verdict-card">
+        <div class="verdict-banner">
+          <div class="verdict-badge" id="verdictBadge">
+            <span class="verdict-dot"></span>
+            <span class="verdict-text" id="stampText">PENDING</span>
+          </div>
+          <div class="verdict-meta">
+            <span class="verdict-label">Screening Assessment</span>
+            <p class="verdict-reason" id="verdictReason"></p>
+          </div>
+        </div>
+        <span class="watermark-tag">scriptedbydev</span>
+      </div>
+
+      <!-- Top Score Gauges + Category Breakdown -->
+      <div class="results-grid results-grid--gauges">
+        
+        <!-- Overall Score Card -->
+        <div class="card score-card">
+          <div class="card__header">
+            <span class="card__tag">OVERALL SCORE</span>
+            <span class="card__subtag" id="scoreTierLabel">Competitive</span>
+          </div>
+          <div class="gauge-wrapper">
+            <svg viewBox="0 0 160 160" class="gauge-svg">
+              <circle cx="80" cy="80" r="64" class="gauge-track"></circle>
+              <circle cx="80" cy="80" r="64" class="gauge-fill" id="dialFill"></circle>
+            </svg>
+            <div class="gauge-center">
+              <span class="gauge-number" id="scoreNumber">0</span>
+              <span class="gauge-max">/ 100</span>
+            </div>
+          </div>
+          <p class="score-card__caption">Multi-dimensional rating combining impact, ATS safety, and relevance.</p>
+        </div>
+
+        <!-- ATS Compatibility Score Card -->
+        <div class="card ats-card">
+          <div class="card__header">
+            <span class="card__tag">ATS COMPATIBILITY</span>
+            <span class="ats-rate-badge" id="atsScoreBadge">100%</span>
+          </div>
+          <div class="ats-body">
+            <div class="ats-score-display">
+              <span class="ats-score-num" id="atsScore">0</span>
+              <span class="ats-score-denom">/ 100 ATS Safety Index</span>
+            </div>
+            <div class="ats-issues-wrap">
+              <span class="ats-issues-title">ATS Parsing Risks Detected:</span>
+              <ul class="ats-issues-list" id="atsIssues"></ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Score Category Breakdown -->
+      <div class="card breakdown-card">
+        <div class="card__header">
+          <span class="card__tag">SCORE BREAKDOWN BY DIMENSION</span>
+          <span class="card__hint">Weighted ATS & recruiter evaluation rubrics</span>
+        </div>
+        <div class="breakdown-grid" id="breakdownGrid">
+          <!-- Dynamically populated or fallback -->
+        </div>
+      </div>
+
+      <!-- Priority Fixes -->
+      <div class="card priority-card">
+        <div class="card__header">
+          <div class="priority-title-wrap">
+            <span class="priority-badge">ACTION ITEMS</span>
+            <h3 class="card__title">Top Priority Improvements</h3>
+          </div>
+          <span class="card__hint">Highest impact actions to increase screening pass rate</span>
+        </div>
+        <ol class="priority-list" id="priorityList"></ol>
+      </div>
+
+      <!-- Strengths & Flagged Issues -->
+      <div class="results-grid results-grid--two">
+        
+        <!-- Strengths -->
+        <div class="card strengths-card">
+          <div class="card__header">
+            <div class="card__header-icon card__header-icon--green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3 class="card__title">Strengths Identified</h3>
+          </div>
+          <ul class="strengths-list" id="strengthsList"></ul>
+        </div>
+
+        <!-- Flagged Issues -->
+        <div class="card flaws-card">
+          <div class="card__header">
+            <div class="card__header-icon card__header-icon--red">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="card__title">Flagged Content & Formatting Gaps</h3>
+          </div>
+          <ul class="flaws-list" id="flawsList"></ul>
+        </div>
+
+      </div>
+
+      <!-- Metric Rewrites -->
+      <div class="card metric-card" id="metricCard" hidden>
+        <div class="card__header">
+          <div class="card__header-icon card__header-icon--amber">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="card__title">Unquantified Bullets — Recommended Rewrites</h3>
+            <p class="card__subtitle">Showing how to transform passive duties into quantified impact using the X-Y-Z formula</p>
+          </div>
+        </div>
+        <div class="rewrites-container" id="metricsList"></div>
+      </div>
+
+      <!-- Section Feedback -->
+      <div class="card sections-card">
+        <div class="card__header">
+          <h3 class="card__title">Section-by-Section Assessment</h3>
+          <span class="card__hint">Structural breakdown across primary resume areas</span>
+        </div>
+        <div class="section-grid" id="sectionGrid"></div>
+      </div>
+
+      <!-- Audit Metadata Footer -->
+      <div class="audit-bar" id="evidenceTag"></div>
+
+      <!-- Action Footer -->
+      <div class="results-actions">
+        <button class="btn btn--primary" id="startOverBtn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6M21.5 22v-6h-6"/><path d="M22 11.5A10 10 0 0 0 3.2 7.2L2.5 8M2 12.5a10 10 0 0 0 18.8 4.2l.7-.7"/></svg>
+          <span>Screen Another Resume</span>
+        </button>
+        <button class="btn btn--outline" id="printReportBtn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span>Print / Save Report</span>
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="site-footer__container">
+      
+      <div class="site-footer__top">
+        
+        <!-- Column 1: Brand & Purpose -->
+        <div class="footer-col">
+          <div class="footer-brand">
+            <span class="footer-brand__name">Resume Screen</span>
+          </div>
+          <p class="footer-desc">
+            ATS-friendly resume analysis, built for a simple and private resume review experience.
+          </p>
+        </div>
+
+        <!-- Column 2: Ecosystem -->
+        <div class="footer-col">
+          <h4 class="footer-heading">FlowCTRL Ecosystem</h4>
+          <p class="footer-desc">
+            Part of the FlowCTRL ecosystem — a collection of connected projects built to help bridge the gap between skills and opportunities.
+          </p>
+        </div>
+
+        <!-- Column 3: Contact & Links -->
+        <div class="footer-col">
+          <h4 class="footer-heading">Contact</h4>
+          <p class="footer-desc">
+            Feedback, suggestions, or collaboration:
+          </p>
+          <a href="mailto:scriptedbydev@gmail.com" class="footer-email">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span>scriptedbydev@gmail.com</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="site-footer__bottom">
+        <div class="footer-meta-left">
+          <span>Scripted by Dev</span>
+          <span class="footer-dot">•</span>
+          <span>FlowCTRL Ecosystem</span>
+        </div>
+        <div class="footer-meta-right">
+          <span>ATS-oriented resume analysis. Your resume data is processed locally and is not stored.</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
