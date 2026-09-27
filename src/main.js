@@ -42,13 +42,23 @@ function generateAuditTag() {
 generateAuditTag();
 
 // ---------- File Selection & Drag-and-Drop ----------
+// browseBtn is a native <label for="fileInput">, so clicking it directly opens
+// the OS file dialog with zero synthetic event blocks. We also add keyboard support.
 if (browseBtn) {
-  browseBtn.addEventListener("click", () => fileInput.click());
+  browseBtn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      fileInput.click();
+    }
+  });
 }
 
 if (dropzone) {
   dropzone.addEventListener("click", (e) => {
-    if (e.target === browseBtn || e.target.closest(".sample-btn") || e.target.closest(".samples-bar")) return;
+    // Only trigger if clicking background dropzone, not the browse label or sample buttons
+    if (e.target.closest("#browseBtn") || e.target.closest(".sample-btn") || e.target.closest(".samples-bar") || e.target.closest("#filePill")) {
+      return;
+    }
     fileInput.click();
   });
 
@@ -107,32 +117,51 @@ function clearSelectedFile() {
 }
 
 // ---------- Pre-Screened Sample Loaders ----------
-async function loadSample(samplePath, defaultName) {
-  try {
-    const res = await fetch(samplePath);
-    if (!res.ok) throw new Error(`Could not load sample file (${res.status})`);
-    const blob = await res.blob();
-    const file = new File([blob], defaultName, { type: "application/pdf" });
-    handleFile(file);
-    // Smooth scroll to analyze action
-    filePill.scrollIntoView({ behavior: "smooth", block: "center" });
-  } catch (err) {
-    console.error("Failed to load sample resume:", err);
-    showError(`Could not load sample resume: ${err.message}`);
+async function loadSample(sampleFileName, defaultName) {
+  const candidatePaths = [
+    `./samples/${sampleFileName}`,
+    `./public/samples/${sampleFileName}`,
+    `samples/${sampleFileName}`,
+    `public/samples/${sampleFileName}`
+  ];
+
+  let blob = null;
+  let lastErr = null;
+
+  for (const p of candidatePaths) {
+    try {
+      const res = await fetch(p);
+      if (res.ok) {
+        blob = await res.blob();
+        break;
+      }
+    } catch (e) {
+      lastErr = e;
+    }
   }
+
+  if (!blob) {
+    console.error("Failed to load sample resume:", lastErr);
+    showError("Could not load sample resume. You can still select any PDF resume from your device.");
+    return;
+  }
+
+  const file = new File([blob], defaultName, { type: "application/pdf" });
+  handleFile(file);
+  filePill.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 if (loadSampleGood) {
   loadSampleGood.addEventListener("click", (e) => {
     e.stopPropagation();
-    loadSample("./samples/Sarah_Nguyen.pdf", "sample_resume_ACCEPTED_Sarah_Nguyen.pdf");
+    loadSample("Sarah_Nguyen.pdf", "sample_resume_ACCEPTED_Sarah_Nguyen.pdf");
   });
 }
 
 if (loadSampleBad) {
   loadSampleBad.addEventListener("click", (e) => {
     e.stopPropagation();
-    loadSample("./samples/John_Carter.pdf", "sample_resume_REJECTED_John_Carter.pdf");
+    loadSample("John_Carter.pdf", "sample_resume_REJECTED_John_Carter.pdf");
   });
 }
 

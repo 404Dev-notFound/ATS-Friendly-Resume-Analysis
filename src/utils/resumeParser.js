@@ -6,11 +6,11 @@
 
 import * as pdfjsLib from 'pdfjs-dist';
 
+// Production PDF.js worker configuration
+// Resolves reliably in all production deployments (Vercel, Netlify, GitHub Pages) without localhost dependency
 if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.mjs',
-    import.meta.url
-  ).toString();
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
 }
 
 export const SECTION_KEYWORDS = [
