@@ -92,6 +92,7 @@ a {
   width: 100%;
   margin: 0 auto;
   padding: 32px 20px 60px;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 /* ===================== NAVBAR ===================== */
@@ -361,16 +362,35 @@ a {
 }
 
 /* ===================== UPLOAD CARD ===================== */
+.upload-wrapper {
+  width: 100%;
+  max-width: 840px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .upload-card {
-  padding: 30px;
+  padding: 22px;
+  background: rgba(17, 17, 17, 0.4);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.upload-card .samples-bar,
+.upload-card .dropzone__sub,
+.upload-card .privacy-notice,
+.upload-card .watermark-tag {
+  display: none;
 }
 
 .dropzone {
   border: 2px dashed rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-md);
-  padding: 44px 20px 30px;
+  padding: 28px 18px 24px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.015);
+  background: rgba(5, 8, 14, 0.22);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -381,8 +401,8 @@ a {
 }
 
 .dropzone__icon-circle {
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: rgba(99, 102, 241, 0.1);
   color: var(--accent-hover);
@@ -390,7 +410,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 16px;
+  margin: 0 auto 12px;
   transition: transform 0.2s ease;
 }
 
@@ -401,7 +421,7 @@ a {
 
 .dropzone__title {
   font-family: var(--font-heading);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   margin-bottom: 6px;
@@ -611,7 +631,7 @@ label.btn {
 
 /* Upload actions row */
 .upload-actions {
-  margin-top: 24px;
+  margin-top: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1331,7 +1351,7 @@ label.btn {
 
 /* ===================== FOOTER ===================== */
 .site-footer {
-  background: var(--bg-secondary);
+  background: transparent;
   border-top: 1px solid var(--border-subtle);
   padding: 44px 20px 32px;
   margin-top: auto;

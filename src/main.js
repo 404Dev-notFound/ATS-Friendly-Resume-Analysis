@@ -6,6 +6,44 @@
 import { extractTextFromPdf } from './utils/resumeParser.js';
 import { analyzeResume } from './utils/resumeAnalyzer.js';
 import { calculateScore } from './utils/resumeScorer.js';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import LaserFlow from './LaserFlow.jsx';
+
+const laserBackground = document.createElement('div');
+laserBackground.className = 'laser-flow-background';
+const appLayout = document.querySelector('.app-layout');
+const footer = appLayout.querySelector('.site-footer');
+appLayout.prepend(laserBackground);
+
+const alignBackgroundWithFooter = () => {
+  laserBackground.style.bottom = `${footer.offsetHeight}px`;
+};
+const footerObserver = new ResizeObserver(alignBackgroundWithFooter);
+footerObserver.observe(footer);
+alignBackgroundWithFooter();
+
+createRoot(laserBackground).render(React.createElement(LaserFlow, {
+  beamPosition: 0.6,
+  surfaceLevel: 1,
+  color: '#22d3ee',
+  intensity: 0.72,
+  flare: 1.5,
+  spread: 1.5,
+  spill: 0.7,
+  fog: 0.55,
+  dust: 1.2,
+  streaks: 2,
+  dots: 0,
+  pulse: 1.75,
+  speed: 0.8,
+  seed: 5,
+  mouseInteraction: true,
+  revealRadius: 220,
+  revealOpacity: 0.6,
+  intro: true,
+  theme: 'dark'
+}));
 
 // DOM Elements
 const dropzone = document.getElementById("dropzone");
